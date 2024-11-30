@@ -1,0 +1,19 @@
+name = "aoc"
+defaultTargets = ["aoc"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
+
+[[lean_lib]]
+name = "Aoc"
+
+[[lean_exe]]
+name = "aoc"
+root = "Main"
+
+[[require]]
+name = "batteries"
+scope = "leanprover-community"
+rev = "v4.13.0"
