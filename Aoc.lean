@@ -8,7 +8,7 @@ def run (args : List String) : IO Unit := do
     if p dayName then do
       let inputFile : System.FilePath := s!"./inputs/{dayName}"
       let outputFile : System.FilePath := s!"./outputs/{dayName}"
-      let input := (← IO.FS.lines inputFile).toList
+      let input ← IO.FS.readFile inputFile
       let start ← IO.monoMsNow
       let actualOutput := runDay input
       let elapsed := (← IO.monoMsNow) - start
@@ -22,6 +22,6 @@ def run (args : List String) : IO Unit := do
       else
         report "?"
   where
-    days : List (String × (List String → String)) := [
+    days : List (String × (String → String)) := [
         ("1", toString ∘ Day1.run)
       ]
