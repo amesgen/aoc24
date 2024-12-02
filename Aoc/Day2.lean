@@ -10,18 +10,31 @@ def parse (input : String) : List (List ℕ) :=
 
 def run (input : String) : ℕ × ℕ :=
   let input := parse input
-  let part1 := input.filter isSafe |>.length
-  let part2 := input.filter (fun r ↦ withoutOne r |>.any isSafe) |>.length
+  let count p := input.filter p |>.length
+  let part1 := count isSafe
+  let part2 := count (withoutOne · |>.any isSafe)
   (part1, part2)
   where
     isSafe (xs : List ℕ) : Bool :=
       let ds := diffs <| xs.map Int.ofNat
       let c0 := ds.all (·>0) || ds.all (·<0)
-      let c1 := ds.map (·.natAbs) |>.all (fun d ↦ 1 <= d && d <= 3)
+      let c1 := ds.all fun d ↦ let d := d.natAbs; 1 <= d && d <= 3
       c0 && c1
 
-    diffs (xs : List ℤ) : List ℤ :=
-      xs.zip (xs.drop 1) |>.map (fun (x, y) ↦ y - x)
+    diffs (xs : List ℤ) : List ℤ := xs.zipWith (·-·) (xs.drop 1)
 
-    withoutOne {α} (xs : List α) : List (List α) :=
-      xs.inits.zipWith (fun i t ↦ i ++ t.drop 1) xs.tails |>.dropLast
+    withoutOne {α} : List α → List (List α)
+    | [] => []
+    | a :: as => as :: ((a :: ·) <$> withoutOne as)
+
+def ex := "
+7 6 4 2 1
+1 2 7 8 9
+9 7 6 2 1
+1 3 2 4 5
+8 6 4 4 1
+1 3 6 7 9
+"
+
+/-- info: (2, 4) -/
+#guard_msgs in #eval run ex
