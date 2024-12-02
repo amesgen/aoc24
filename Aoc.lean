@@ -1,4 +1,5 @@
 import Aoc.Day1
+import Aoc.Day2
 
 def run (args : List String) : IO Unit := do
   let p := match args with
@@ -23,5 +24,6 @@ def run (args : List String) : IO Unit := do
         report "?"
   where
     days : List (String × (String → String)) := [
-        ("1", toString ∘ Day1.run)
+        ("1", toString ∘ Day1.run),
+        ("2", toString ∘ Day2.run)
       ]
