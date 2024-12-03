@@ -17,3 +17,8 @@ root = "Main"
 name = "batteries"
 scope = "leanprover-community"
 rev = "v4.13.0"
+
+[[require]]
+name = "Parser"
+scope = "fgdorais"
+rev = "4d74c484a91420b5866f9d883d597bfae4232de8"
