@@ -33,17 +33,9 @@ partial def run (input : String) : ℕ × ℕ :=
   let part1 := summarize sorted
 
   let specialSort (xs : List ℕ) : List ℕ :=
-    let xss : RBSet ℕ := RBSet.ofList xs _
-    let transClosure: RBMap ℕ (RBSet ℕ) := 
-      let rec dfs (visited : RBSet ℕ) (x : ℕ) : RBSet ℕ :=
-        if visited.contains x then visited else
-          let ys : RBSet ℕ := rulesMap.findD x RBSet.empty
-            |> RBSet.intersectWith compare (fun _ ↦ id) xss
-          ys.foldl dfs (visited.insert x)
-      xs.map (fun x ↦ (x, dfs RBSet.empty x)) |> (RBMap.ofList · _)
     let cmp (x y : ℕ) : Ordering :=
-      let rx := transClosure.findD x RBSet.empty
-      let ry := transClosure.findD y RBSet.empty
+      let rx := rulesMap.findD x RBSet.empty
+      let ry := rulesMap.findD y RBSet.empty
       match rx.contains y, ry.contains x with
       | true, true => .eq
       | true, false => .lt
