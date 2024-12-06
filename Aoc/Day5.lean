@@ -14,7 +14,7 @@ def parse (input : String) : List (ℕ × ℕ) × List (List ℕ) :=
       updates.splitOn "\n" |>.map (·.splitOn "," |>.filterMap (·.toNat?))
     pure (rules, updates)
 
-partial def run (input : String) : ℕ × ℕ :=
+def run (input : String) : ℕ × ℕ :=
   let (rules, updates) := parse input
   let rulesMap: RBMap ℕ (RBSet ℕ) := 
     rules.map (fun (a,b) ↦ RBMap.single a (RBSet.single b))
