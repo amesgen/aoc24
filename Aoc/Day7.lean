@@ -10,11 +10,22 @@ def parse (input : String) : List (ℕ × List ℕ) :=
     let as := as.splitOn " " |>.filterMap (·.toNat?)
     pure (← r.toNat?, as)
 
--- from mathlib
-partial def log (b : ℕ) : ℕ → ℕ
-| n => if b ≤ n ∧ 1 < b then log b (n / b) + 1 else 0
+def conct (a b : ℕ): ℕ :=
+  let rec go (n : ℕ) (hnpos : n > 0) : ℕ :=
+    if n > b then n else go (10 * n) (Nat.mul_pos (by decide) hnpos)
+  termination_by b + 1 - n
+  decreasing_by
+    all_goals simp_wf
+    simp_all
+    apply Nat.sub_lt_sub_left
+    . apply Nat.lt_add_one_of_le
+      assumption
+    . rw [← Nat.one_mul n, show 10 * (1 * n) = 10 * n by simp]
+      apply Nat.mul_lt_mul_of_pos_right
+      . decide
+      . assumption
+  a * go 10 (by decide) + b
 
-def conct (a b : ℕ): ℕ := a * (10 ^ (log 10 b + 1)) + b
 
 def run (input : String) : ℕ × ℕ :=
   let input := parse input
