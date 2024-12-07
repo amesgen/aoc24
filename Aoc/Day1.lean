@@ -14,9 +14,7 @@ def run (input : String) : ℕ × ℕ :=
   let part1 := as.sort.zip bs.sort
     |>.map (fun (a, b) ↦ if a >= b then a - b else b - a)
     |> Nat.sum
-  let mults : RBMap ℕ ℕ := bs
-    |>.map (fun b ↦ RBMap.single b 1)
-    |>.foldl (RBMap.mergeWith (fun _ ↦ (·+·))) RBMap.empty
+  let mults : RBMap ℕ ℕ := bs.map (·, 1) |> (RBMap.ofListWith · (·+·) _)
   let part2 := as.map (fun a ↦ a * mults.findD a 0) |> Nat.sum
   (part1, part2)
 

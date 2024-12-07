@@ -27,3 +27,18 @@ def sortOn [Ord β] (f : α → β) (as : List α) : List α :=
 def sort [Ord α] (as : List α) : List α := as.sortOn id
 
 end List
+
+namespace Batteries.RBMap
+
+variable {α β}
+
+def ofListWith (l : List (α × β))
+    (combine : β → β → β) (cmp : α → α → Ordering) : RBMap α β cmp :=
+  l.map (fun (a, b) ↦ RBMap.single a b)
+    |>.foldl (RBMap.mergeWith fun _ ↦ combine) RBMap.empty
+
+def group (l : List (α × β)) (cmp : α → α → Ordering)
+    (cmp' : β → β → Ordering) : RBMap α (RBSet β cmp') cmp :=
+  l.map (fun (a, b) ↦ (a, RBSet.single b)) |> (ofListWith · RBSet.union cmp)
+
+end RBMap

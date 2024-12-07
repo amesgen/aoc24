@@ -16,9 +16,7 @@ def parse (input : String) : List (ℕ × ℕ) × List (List ℕ) :=
 
 def run (input : String) : ℕ × ℕ :=
   let (rules, updates) := parse input
-  let rulesMap: RBMap ℕ (RBSet ℕ) := 
-    rules.map (fun (a,b) ↦ RBMap.single a (RBSet.single b))
-      |>.foldl (RBMap.mergeWith (fun _ ↦ RBSet.union)) RBMap.empty
+  let rulesMap: RBMap ℕ (RBSet ℕ) := RBMap.group rules _ _
 
   let isSorted (xs : List ℕ) : Bool :=
     xs.zip (xs.tails.drop 1) |>.all fun (x, ys) ↦ ys.all fun y ↦ 
