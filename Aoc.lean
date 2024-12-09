@@ -6,6 +6,7 @@ import Aoc.Day5
 import Aoc.Day6
 import Aoc.Day7
 import Aoc.Day8
+import Aoc.Day9
 
 def run (args : List String) : IO Unit := do
   let p := match args with
@@ -37,5 +38,6 @@ def run (args : List String) : IO Unit := do
         ("5", toString ∘ Day5.run),
         ("6", toString ∘ Day6.run),
         ("7", toString ∘ Day7.run),
-        ("8", toString ∘ Day8.run)
+        ("8", toString ∘ Day8.run),
+        ("9", toString ∘ Day9.run)
       ]
