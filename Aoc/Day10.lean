@@ -7,7 +7,7 @@ open Batteries
 def parse (input : String) : RBMap (ℤ × ℤ) ℕ :=
   input.trim.splitOn "\n"
     |>.mapIdx (fun y r ↦ r.toList.mapIdx fun x c ↦ ((x, y), c.toNat - '0'.toNat))
-    |>.join |> (RBMap.ofList · _)
+    |>.flatten |> (RBMap.ofList · _)
 
 partial def run (input : String) : ℕ × ℕ :=
   let grid := parse input
@@ -28,7 +28,7 @@ partial def run (input : String) : ℕ × ℕ :=
             r := r + (← walk (pos', h'))
         modify (·.insert z.1 r)
         pure r
-    zeroes.map (walk · |>.run' ∅) |> Nat.sum
+    zeroes.map (walk · |>.run' ∅) |> List.sum
 
   let part1 := rate fun _ ↦ 0
   let part2 := rate id

@@ -14,13 +14,13 @@ def run (input : String) : ℕ × ℕ :=
   let vert := hori.transpose
   let allDiags := diags hori ++ diags (hori.map (·.reverse))
   let all  := andReverse <| hori ++ vert ++ allDiags
-  let part1 := all.map countXmas |> Nat.sum
+  let part1 := all.map countXmas |> List.sum
 
   let hori := input.mapIdx fun y r ↦ r.mapIdx fun x c ↦ ((y, x), c)
   let diags0 := andReverse <| diags hori
   let diags1 := andReverse <| diags <| hori.map (·.reverse)
-  let mas0 := diags0.bind filterMas |> (RBSet.ofList · compare)
-  let mas1 := diags1.bind filterMas |> (RBSet.ofList · compare)
+  let mas0 := diags0.flatMap filterMas |> (RBSet.ofList · compare)
+  let mas1 := diags1.flatMap filterMas |> (RBSet.ofList · compare)
   let mas : RBSet (ℕ × ℕ) := RBSet.intersectWith compare (fun _ ↦ id) mas0 mas1
   let part2 := mas.size
 

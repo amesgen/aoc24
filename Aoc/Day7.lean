@@ -10,22 +10,7 @@ def parse (input : String) : List (ℕ × List ℕ) :=
     let as := as.splitOn " " |>.filterMap (·.toNat?)
     pure (← r.toNat?, as)
 
-def conct (a b : ℕ): ℕ :=
-  let rec go (n : ℕ) (hnpos : n > 0) : ℕ :=
-    if n > b then n else go (10 * n) (Nat.mul_pos (by decide) hnpos)
-  termination_by b + 1 - n
-  decreasing_by
-    all_goals simp_wf
-    simp_all
-    apply Nat.sub_lt_sub_left
-    . apply Nat.lt_add_one_of_le
-      assumption
-    . rw [← Nat.one_mul n, show 10 * (1 * n) = 10 * n by simp]
-      apply Nat.mul_lt_mul_of_pos_right
-      . decide
-      . assumption
-  a * go 10 (by decide) + b
-
+def conct (a b : ℕ): ℕ := a * (10 ^ (Nat.log 10 b + 1)) + b
 
 def run (input : String) : ℕ × ℕ :=
   let input := parse input
@@ -39,7 +24,7 @@ def run (input : String) : ℕ × ℕ :=
     | a :: as => go a as
 
   let summarize ops :=
-    input.filterMap (fun (r, as) ↦ do guard <| test ops r as; r) |> Nat.sum
+    input.filterMap (fun (r, as) ↦ do guard <| test ops r as; r) |> List.sum
 
   let ops1 := [(·+·), (·*·)]
   let ops2 := ops1.concat conct

@@ -13,7 +13,7 @@ partial def run (input : String) : ℕ × ℕ :=
   let part1 :=
     let fs : List (Option ℕ) := input
       |>.mapIdx (fun i l ↦ List.replicate l (if i % 2 = 0 then some (i / 2) else none))
-      |>.join
+      |>.flatten
     let somes : List ℕ := fs.filterMap id
     let rec go1 {α} : List (Option α) → List α → List α
     | none :: xs, y :: ys => y :: go1 xs ys
@@ -21,7 +21,7 @@ partial def run (input : String) : ℕ × ℕ :=
     | some x :: xs, ys => x :: go1 xs ys
     | [], _ => []
     let defrag : List ℕ := go1 fs somes.reverse |>.take somes.length
-    defrag.mapIdx (fun i c ↦ i * c) |> Nat.sum
+    defrag.mapIdx (fun i c ↦ i * c) |> List.sum
 
   let part2 :=
     let fs : List (ℕ × Option ℕ) := input
@@ -43,8 +43,8 @@ partial def run (input : String) : ℕ × ℕ :=
       else
         x :: go2 lc' xs
     let defrag := go2 none fs.reverse |>.reverse
-    defrag.bind (fun (l, c) ↦ List.replicate l c)
-      |>.mapIdx (fun i c ↦ i * c.getD 0) |> Nat.sum
+    defrag.flatMap (fun (l, c) ↦ List.replicate l c)
+      |>.mapIdx (fun i c ↦ i * c.getD 0) |> List.sum
 
   (part1, part2)
 

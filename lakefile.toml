@@ -14,11 +14,11 @@ name = "aoc"
 root = "Main"
 
 [[require]]
-name = "batteries"
+name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.13.0"
+rev = "v4.14.0"
 
 [[require]]
 name = "Parser"
 scope = "fgdorais"
-rev = "4d74c484a91420b5866f9d883d597bfae4232de8"
+rev = "711662ab6f3c4c0080f6379737b41b1089d3d3f8"

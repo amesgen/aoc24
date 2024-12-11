@@ -7,7 +7,7 @@ open Batteries
 def parse (input : String) : RBMap (ℤ × ℤ) Char :=
   input.trim.splitOn "\n"
     |>.mapIdx (fun y r ↦ r.toList.mapIdx fun x c ↦ ((x, y), c))
-    |>.join
+    |>.flatten
     |> (RBMap.ofList · _)
 
 partial def run (input : String) : ℕ × ℕ :=
@@ -17,10 +17,10 @@ partial def run (input : String) : ℕ × ℕ :=
     |> (RBMap.group · _ _)
 
   let countAnti (longRange : Bool) : ℕ := antennas.toList
-    |>.bind (fun (_, poss) ↦ poss.toList
+    |>.flatMap (fun (_, poss) ↦ poss.toList
       |>.mapIdx (fun i p ↦ (p, ·) <$> poss.toList.drop (i + 1))
-      |>.join
-      |>.bind (fun (p, p') ↦
+      |>.flatten
+      |>.flatMap (fun (p, p') ↦
            let rec go (a b :  ℤ × ℤ) : List (ℤ × ℤ) :=
              if grid.contains a then a :: go (a + b) b else []
            let filterRange (xs : List (ℤ × ℤ)) :=

@@ -26,7 +26,7 @@ def run (input : String) : ℕ × ℕ :=
   let (sorted, unsorted) := updates.partition isSorted
 
   let summarize (xs : List (List ℕ)) :=
-    xs.map (fun u ↦ u.getD (u.length / 2) 0) |> Nat.sum
+    xs.map (fun u ↦ u.getD (u.length / 2) 0) |> List.sum
 
   let part1 := summarize sorted
 

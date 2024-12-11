@@ -17,7 +17,7 @@ partial def run (input : String) : ℕ × ℕ :=
   let input := parse input
   let grid : RBMap (ℤ × ℤ) Char :=
     input.mapIdx (fun y r ↦ r.mapIdx fun x c ↦ ((x, y), c))
-      |>.join |> (RBMap.ofList · _)
+      |>.flatten |> (RBMap.ofList · _)
   let initialGuard := grid.toList
     |>.find? (fun (_, c) ↦ c == '^') |>.map (·.1) |>.getD (0, 0)
   let initialDir : ℤ × ℤ := (0, -1)

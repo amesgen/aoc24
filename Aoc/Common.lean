@@ -1,7 +1,6 @@
 import Batteries
-
-abbrev ℕ := Nat
-abbrev ℤ := Int
+import Mathlib.Data.Nat.Log
+import Mathlib.Logic.Function.Iterate
 
 abbrev RBMap α [Ord α] β := Batteries.RBMap α β compare
 abbrev RBSet α [Ord α] := Batteries.RBSet α compare

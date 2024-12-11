@@ -38,7 +38,7 @@ def parse (input : String) : List Instr :=
 
 def run (input : String) : ℕ × ℕ :=
   let input := parse input
-  let part1 := input.map (fun | .Mul a b => a * b | _ => 0) |> Nat.sum
+  let part1 := input.map (fun | .Mul a b => a * b | _ => 0) |> List.sum
   let part2 :=
     let rec go (enabled : Bool) : List Instr → ℕ
     | [] => 0
