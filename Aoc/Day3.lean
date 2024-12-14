@@ -1,5 +1,4 @@
 import Aoc.Common
-import Parser
 
 namespace Day3
 
@@ -10,8 +9,6 @@ inductive Instr where
   | Mul (a b : ℕ)
   | Do (enabled : Bool)
 deriving Repr
-
-abbrev P := Parser Unit Substring Char
 
 def parse (input : String) : List Instr :=
   match Parser.run (p <* endOfInput) input with

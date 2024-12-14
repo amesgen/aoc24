@@ -1,5 +1,4 @@
 import Aoc.Common
-import Parser
 
 namespace Day14
 
@@ -10,8 +9,6 @@ structure Robot where
   p : ℤ × ℤ
   v : ℤ × ℤ
 deriving Repr
-
-abbrev P := Parser Unit Substring Char
 
 def parse (input : String) : List Robot :=
   match Parser.run (p <* endOfInput) input with

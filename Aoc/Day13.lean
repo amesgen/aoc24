@@ -1,5 +1,4 @@
 import Aoc.Common
-import Parser
 
 namespace Day13
 
@@ -11,8 +10,6 @@ structure Claw where
   b : ℕ × ℕ
   tgt : ℕ × ℕ
 deriving Repr
-
-abbrev P := Parser Unit Substring Char
 
 def parse (input : String) : List Claw :=
   match Parser.run (p <* endOfInput) input with

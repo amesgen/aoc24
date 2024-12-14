@@ -4,6 +4,7 @@ import Mathlib.Data.List.Defs
 import Mathlib.Data.Nat.Dist
 import Mathlib.Data.Nat.Log
 import Mathlib.Logic.Function.Iterate
+import Parser
 
 abbrev RBMap α [Ord α] β := Batteries.RBMap α β compare
 abbrev RBSet α [Ord α] := Batteries.RBSet α compare
@@ -44,3 +45,7 @@ def group (l : List (α × β)) (cmp : α → α → Ordering)
   l.map (fun (a, b) ↦ (a, RBSet.single b)) |> (ofListWith · RBSet.union cmp)
 
 end RBMap
+
+open Parser
+
+abbrev P := Parser Unit Substring Char
