@@ -1,5 +1,6 @@
 import Batteries
 import Mathlib.Data.Nat.Log
+import Mathlib.Data.Int.GCD
 import Mathlib.Logic.Function.Iterate
 
 abbrev RBMap α [Ord α] β := Batteries.RBMap α β compare
