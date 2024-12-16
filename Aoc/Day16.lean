@@ -13,22 +13,26 @@ def dijkstra {α} [BEq α] [Hashable α] [Inhabited α]
   (s : α) (stop : α → Bool) (neighs : α → List (α × ℕ))
   : Option (α × ℕ × HashMap α (Std.HashSet α)) := Id.run do
   let mut done : Std.HashSet α := ∅
-  let mut q : HashMap α ℕ := HashMap.ofList [(s, 0)]
+  let hcmp : α × ℕ → α × ℕ → Bool := fun a b ↦ a.2 ≥ b.2
+  let mut q := ({} : BinaryHeap (α × ℕ) hcmp).insert (s, 0)
+  let mut dists := HashMap.ofList [(s, 0)]
   let mut prev : HashMap α (Std.HashSet α) := ∅
-  while ¬q.isEmpty do
-    let d := q.toList.map (·.2) |>.min?.get!
-    let a := q.toList.find? (·.2 = d) |>.get!.1
+  while q.size > 0 do
+    let (ad, q') := q.extractMax
+    let (a, d) := ad.get!
+    q := q'
+    if done.contains a then continue
     if stop a then return some (a, d, prev)
-    q := q.erase a
     done := done.insert a
     for (b, l) in neighs a do
       if ¬ done.contains b then do
         let d' := d + l
-        let (notLarger, smaller) := match q.find? b with
+        let (notLarger, smaller) := match dists.find? b with
         | none => (true, true)
         | some d'' => (d' ≤ d'', d' < d'')
         if smaller then
-          q := q.insert b d'
+          q := q.insert (b, d')
+          dists := dists.insert b d'
         if notLarger then
           let ba := HashMap.ofList [(b, {a})]
           prev := prev.mergeWith (fun _ ↦ (·.union)) ba
