@@ -62,8 +62,7 @@ def runOut (s : State) : List ℕ := Id.run do
 def run (input : String) : Option (String × ℕ) := do
   let s: State ← parse input
 
-  let out := runOut s
-  let part1 := out |>.map toString |> String.intercalate ","
+  let part1 := runOut s |>.map toString |> String.intercalate ","
 
   -- This assumes that the program has a certain structure (i.e. it ends with
   -- 3,0, has no other jumps, only modifies A via 0,3, and B/C don't carry state
@@ -76,8 +75,7 @@ def run (input : String) : Option (String × ℕ) := do
       let s := { sBodyLoop with regA := a, out := [], ptr := 0 }
       guard <| runOut s = [o]
       pure a
-  let part2 ← s.code.toList
-    |>.foldr (fun c ↦ (·.flatMap (asWithOutput c))) [0] |>.min?
+  let part2 ← s.code.foldr (fun c ↦ (·.flatMap (asWithOutput c))) [0] |>.min?
 
   (part1, part2)
 
