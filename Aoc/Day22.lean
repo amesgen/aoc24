@@ -14,14 +14,16 @@ def evolve : ℕ → ℕ :=
 def slidingWindows {α} (n : ℕ) : List α → List (List α)
 | [] => []
 | xs@(_ :: ys) =>
-    if xs.length < n then [] else
-      xs.take n :: slidingWindows n ys
+    let s := xs.take n
+    if s.length < n then [] else
+       s :: slidingWindows n ys
 
 def run (input : String) : ℕ × ℕ :=
   let input := parse input
-  let part1 := input.map (Nat.iterate evolve 2000) |>.sum
-  let part2 := input.map (fun seed ↦
-      let prizes := List.iterate evolve seed 2001 |>.map (· % 10)
+  let randoms := input.map (List.iterate evolve · 2001)
+  let part1 := randoms.filterMap (·.getLast?) |>.sum
+  let part2 := randoms.map (fun randoms ↦
+      let prizes := randoms.map (· % 10)
       let prizeDiff a b := Int.ofNat a - Int.ofNat b
       let changes := prizes.drop 1 |>.zipWith prizeDiff prizes
       slidingWindows 4 changes |>.zip (prizes.drop 4)
